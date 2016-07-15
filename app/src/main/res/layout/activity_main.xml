@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="#FFFFFF"
+             android:id="@+id/root_layout">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/coord_center"
+            android:layout_width="20dip"
+            android:layout_height="20dip"
+            android:layout_centerHorizontal="true"
+            />
+
+        <LinearLayout
+            android:id="@+id/gender_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_toLeftOf="@id/coord_center"
+            android:layout_alignParentLeft="true"
+            android:padding="1dp"
+            android:background="@drawable/body_rect_selector"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/man_btn"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_weight="1"
+                android:background="@color/colorLightBlue"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:onClick="genderClick">
+                <ImageView
+                    android:id="@+id/man_icon"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@mipmap/icon_man_pressed"/>
+                <TextView
+                    android:id="@+id/man_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="男"
+                    android:textSize="16dp"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/woman_btn"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:onClick="genderClick">
+                <ImageView
+                    android:id="@+id/woman_icon"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@mipmap/icon_woman"/>
+                <TextView
+                    android:id="@+id/woman_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="女"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorLightBlue"
+                    android:textStyle="bold"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/side_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:padding="1dp"
+            android:orientation="horizontal"
+            android:background="@drawable/body_rect_selector"
+            android:layout_toRightOf="@id/coord_center"
+            android:layout_alignParentRight="true"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/flipFront"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_weight="1"
+                android:background="@color/colorLightBlue"
+                android:text="正面"
+                android:textSize="16dp"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:onClick="sideClick"
+                android:clickable="true"
+                />
+            <TextView
+                android:id="@+id/flipBack"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_weight="1"
+                android:text="反面"
+                android:textSize="16dp"
+                android:textColor="@color/colorLightBlue"
+                android:gravity="center"
+                android:onClick="sideClick"
+                android:clickable="true"
+                />
+        </LinearLayout>
+
+
+        <com.angelocyj.bodypart.view.WaveEffectLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/gender_toggle"
+            android:paddingTop="30dp"
+            android:paddingBottom="30dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:clickable="false"
+            android:tag="root">
+
+            <FrameLayout
+                android:id="@+id/body_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:tag="root">
+
+            </FrameLayout>
+            <com.angelocyj.bodypart.view.AnimatedPathView.AnimatedPathView
+                android:id="@+id/animatedPathView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                app:pathColor="@color/recommend_bar_text"
+                app:pathWidth="1"
+                android:tag="root"/>
+
+            <AbsoluteLayout
+                android:id="@+id/left_region_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                >
+
+            </AbsoluteLayout>
+            <AbsoluteLayout
+                android:id="@+id/right_region_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right">
+
+            </AbsoluteLayout>
+        </com.angelocyj.bodypart.view.WaveEffectLayout>
+
+
+    </RelativeLayout>
+
+
+</FrameLayout>

@@ -1,0 +1,10 @@
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/body_back"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:adjustViewBounds="true"
+    android:src="@mipmap/man_back"
+    android:contentDescription="人体背面"
+    android:clickable="true"
+    android:tag="root"/>

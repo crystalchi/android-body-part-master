@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/text_view"
+    android:tag="region"
+    android:clickable="true"
+    android:gravity="center"
+    android:layout_width="@dimen/region_width"
+    android:layout_height="@dimen/region_width"
+    android:background="@drawable/btn_blue_circle_selector"
+    android:text="头部"
+    android:maxLines="2"
+    android:scrollHorizontally="false"
+    android:textColor="@android:color/white"
+    android:textSize="14sp"
+    />
