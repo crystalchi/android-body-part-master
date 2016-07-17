@@ -161,6 +161,7 @@ public class WaveEffectLayout extends FrameLayout implements Runnable {
         int x = (int) event.getRawX();
         int y = (int) event.getRawY();
         Log.d(TAG, "x , y  is " + x + " , " + y);
+
         int action = event.getAction();
         if (action == MotionEvent.ACTION_DOWN) {
 
