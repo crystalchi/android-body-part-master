@@ -8,14 +8,18 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.AbsoluteLayout;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.angelocyj.bodypart.BodyFragment;
 import com.angelocyj.bodypart.R;
+import com.angelocyj.bodypart.region.Region;
 import com.angelocyj.bodypart.region.RegionPathView;
 
 /**
@@ -33,7 +37,7 @@ public class HumanBodyWidget {
 //    private FragmentManager.OnBackStackChangedListener onBackStackChangedListener;
 
     private AppCompatActivity activity;
-    private WaveEffectLayout container;
+    private static WaveEffectLayout container;
 
     // api < 11
     private LayoutInflater inflater;
@@ -178,6 +182,30 @@ public class HumanBodyWidget {
         public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
             bodyImageView = (ImageView) view.findViewById(R.id.body_front);
+            bodyImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(container.getFloatImageView() != null){
+                        if(container.getFloatImageView().getTag() != null){
+                            Region region = (Region) container.getFloatImageView().getTag();
+                            if(region.getValue() == 1){
+                                Toast.makeText(getActivity(), "头部" , Toast.LENGTH_LONG).show();
+                            }else if(region.getValue() == 9){
+                                Toast.makeText(getActivity(), "上肢" , Toast.LENGTH_LONG).show();
+                            }else if(region.getValue() == 11){
+                                Toast.makeText(getActivity(), "胸部" , Toast.LENGTH_LONG).show();
+                            }else if(region.getValue() == 13){
+                                Toast.makeText(getActivity(), "腹部" , Toast.LENGTH_LONG).show();
+                            }else if(region.getValue() == 14){
+                                Toast.makeText(getActivity(), "下体" , Toast.LENGTH_LONG).show();
+                            }else if(region.getValue() == 15){
+                                Toast.makeText(getActivity(), "下肢" , Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        container.getmFrameLayout().removeView(container.getFloatImageView());
+                    }
+                }
+            });
         }
 
         @Override
@@ -191,6 +219,54 @@ public class HumanBodyWidget {
             } else {
                 bodyImageView.setImageResource(R.mipmap.woman_front);
             }
+        }
+
+        @Override
+        public void monitorTouchEvent(MotionEvent event) {
+            /*int touchSlop = ViewConfiguration.get(getActivity()).getScaledTouchSlop();
+            int downX = 0, downY = 0;
+            int moveX = 0, moveY = 0;
+            switch (event.getAction()){
+                case MotionEvent.ACTION_DOWN:
+                    downX = (int) event.getX();
+                    downY = (int) event.getY();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    int disX = moveX - downX;
+                    int disY = moveY - downY;
+                    int distanceX = Math.abs(disX);
+                    int distanceY = Math.abs(disY);
+                    if(container.getFloatImageView() != null){
+                        if(container.getFloatImageView().getTag() != null){
+                            Region region = (Region) container.getFloatImageView().getTag();
+                            if(region.getValue() == 1){
+                                Toast.makeText(getActivity(), "头部" , Toast.LENGTH_LONG).show();
+                            }else if(region.getValue() == 15){
+                                Toast.makeText(getActivity(), "大腿" , Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        *//*boolean flag = false;
+                        if(distanceX > distanceY){
+                            if(distanceX > touchSlop){
+                                flag = true;
+                            }
+                        }else{
+                            if(distanceY > touchSlop){
+                                flag = true;
+                            }
+                        }
+                        if(!flag){ //移动过，未超过最小触摸距离，可认为是点击状态
+                           *//* *//*Toast.makeText(getActivity(), "go......" , Toast.LENGTH_LONG).show();
+                        }*//*
+                        container.getmFrameLayout().removeView(container.getFloatImageView());
+
+                    }
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    moveX = (int) event.getX();
+                    moveY = (int) event.getY();
+                    break;
+            }*/
         }
     }
 
@@ -219,6 +295,11 @@ public class HumanBodyWidget {
             } else {
                 bodyImageView.setImageResource(R.mipmap.woman_back);
             }
+        }
+
+        @Override
+        public void monitorTouchEvent(MotionEvent event) {
+
         }
     }
 

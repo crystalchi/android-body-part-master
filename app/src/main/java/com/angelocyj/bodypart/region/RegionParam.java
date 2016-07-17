@@ -16,21 +16,25 @@ public class RegionParam {
     public static final int REGION_BACK_UPPER_PART = 0x00000040;
     public static final int REGION_BACK_MIDDLE_PART = 0x00000080;
     public static final int REGION_BACK_LOWER_PART = 0x00000100;
+    public static final int REGION_FRONT_NAKEDNESS = 0x00000011; //下体 nekedness
 
     /**
      * 身体图片标准长度 in pixels
      */
-    public static final int standardHeight = 1378;
+    /*public static final int standardHeight = 1378;*/
+    public static final int standardHeight = 951;
 
     /**
      * 身体图片标准宽度 in pixels
      */
-    public static final int standardWidth = 693;
+    /*public static final int standardWidth = 693;*/
+    public static final int standardWidth = 449;
 
     /**
      * 顶部透明部分偏移量
      */
-    public static final int standardOffsetY = 10;
+    /*public static final int standardOffsetY = 10;*/
+    public static final int standardOffsetY = 4;
 
     /**
      * 圆形部位宽度  in dp
@@ -61,6 +65,7 @@ public class RegionParam {
         regionItems.put(REGION_FRONT_CHEST, new Region[]{Region.SHOULDER, Region.CHEST});
         regionItems.put(REGION_FRONT_WAIST, new Region[]{Region.ABDOMEN, Region.WAIST, Region.PELVIC});
         regionItems.put(REGION_FRONT_LEG, new Region[]{Region.LEG, Region.FOOT});
+        regionItems.put(REGION_FRONT_NAKEDNESS, new Region[]{Region.PELVIC}); //下体 nekedness
 
         regionItems.put(REGION_BACK_HEAD, new Region[]{Region.HEAD, Region.BACKNECK, Region.EAR});
         regionItems.put(REGION_BACK_UPPER_PART, new Region[]{Region.BACKSHOULDER, Region.BACKHAND, Region.BACKBACK, Region.BACKARM});

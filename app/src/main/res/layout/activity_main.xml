@@ -141,6 +141,26 @@
                 android:layout_height="match_parent"
                 android:tag="root">
 
+                <!--<ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:src="@mipmap/man_front"
+                    android:contentDescription="人体正面"
+                    android:clickable="true"
+                    android:tag="root"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:src="@mipmap/diagnose_man_head"
+                    android:contentDescription="人体正面"
+                    android:clickable="true"
+                    android:tag="root"/>-->
+
             </FrameLayout>
             <com.angelocyj.bodypart.view.AnimatedPathView.AnimatedPathView
                 android:id="@+id/animatedPathView"

@@ -30,6 +30,7 @@ public abstract class BodyFragment extends Fragment implements MainActivity.MyTo
     public void onTouchEvent(MotionEvent event) {
         if(event.getAction() == MotionEvent.ACTION_UP){
             //逻辑处理
+            monitorTouchEvent(event);
         }
     }
 
@@ -39,4 +40,5 @@ public abstract class BodyFragment extends Fragment implements MainActivity.MyTo
 
     public abstract void setShowImage(Boolean isMan);
 
+    public abstract void monitorTouchEvent(MotionEvent event);
 }

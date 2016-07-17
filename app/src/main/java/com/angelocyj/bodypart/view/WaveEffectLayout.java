@@ -6,15 +6,20 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.angelocyj.bodypart.R;
 import com.angelocyj.bodypart.UIUtil;
@@ -62,29 +67,38 @@ public class WaveEffectLayout extends FrameLayout implements Runnable {
     private ImageView bodyImageView;
     private int regionType = -1;
 
-    private static int mHeadY, mHandX1, mHandX2, mChestY, mWaistY, mBackHeadY, mUpperPartY, mMiddlePartY;
+    private static int mHeadY, mHandX1, mHandX2, mChestY, mWaistY, mBackHeadY, mUpperPartY, mMiddlePartY,
+            mNakedness, mLeftLowerExtremity, mRightLowerExtremity, mRleLeft, mRleTop, mRleRight, mRleBottom,
+            mNdLeft, mNdTop, mNdRight, mNdBottom;
 
     private static int bodyImageViewHeight = 0;
 
+    private FrameLayout mFrameLayout;
+    private Context mContext;
+    private ImageView floatImageView;
+    private Rect mRleRect = new Rect();
+    private Rect mNakednessRect = new Rect();
+
     public WaveEffectLayout(Context context) {
         super(context);
-        init();
+        init(context);
     }
 
     public WaveEffectLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context);
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public WaveEffectLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        init(context);
     }
 
-    private void init() {
+    private void init(Context context) {
         setWillNotDraw(false);
         mPaint.setColor(getResources().getColor(R.color.reveal_color));
+        this.mContext = context;
     }
 
     @Override
@@ -158,9 +172,13 @@ public class WaveEffectLayout extends FrameLayout implements Runnable {
                 return super.dispatchTouchEvent(event);
             }
             bodyImageView = getBodyImageView();
+            getBodyFrameLayout();
 
             if (isTouchPointInTransparent(x,y)) {
                 regionType = -1;
+                if(floatImageView != null){
+                    floatImageView.setTag(null);
+                }
             } else {
                 int newRegionType = touchPointInRegion(x, y);
                 if (newRegionType == regionType) {
@@ -169,7 +187,7 @@ public class WaveEffectLayout extends FrameLayout implements Runnable {
                     regionType = newRegionType;
                 }
             }
-            refresh(regionType);
+            //refresh(regionType);  //注释掉，此处暂时不做显示人体部位关节。
 
             if (touchTarget != null && touchTarget.isClickable() && touchTarget.isEnabled()) {
                 mTouchTarget = touchTarget;
@@ -270,15 +288,42 @@ public class WaveEffectLayout extends FrameLayout implements Runnable {
             bodyImageViewHeight = bodyImageView.getHeight();
             int paddingTop = this.getPaddingTop();
 
-            mHeadY = (/*219*/ 212 + RegionParam.standardOffsetY) * bodyImageViewHeight / RegionParam.standardHeight + mLocationInScreen[1] + paddingTop;
-            mHandX1 = /*200*/214 * bodyImageView.getWidth() / RegionParam.standardWidth + bodyImageView.getLeft() + mLocationInScreen[0];
+            /*mHeadY = (*//*219*//* 212 + RegionParam.standardOffsetY) * bodyImageViewHeight / RegionParam.standardHeight + mLocationInScreen[1] + paddingTop;
+            mHandX1 = *//*200*//*214 * bodyImageView.getWidth() / RegionParam.standardWidth + bodyImageView.getLeft() + mLocationInScreen[0];
             mHandX2 = (RegionParam.standardWidth - 214) * bodyImageView.getWidth() / RegionParam.standardWidth  + bodyImageView.getLeft() + mLocationInScreen[0];
             mChestY = (212 + RegionParam.standardOffsetY + 232) * bodyImageViewHeight / RegionParam.standardHeight + mLocationInScreen[1] + paddingTop;
             mWaistY = (212 + RegionParam.standardOffsetY + 232 + 248) * bodyImageViewHeight / RegionParam.standardHeight + mLocationInScreen[1] + paddingTop;
 
             mBackHeadY = (221 + RegionParam.standardOffsetY) * bodyImageViewHeight / RegionParam.standardHeight + mLocationInScreen[1] + paddingTop;
-            mUpperPartY = (221 + RegionParam.standardOffsetY + 364) * bodyImageViewHeight / RegionParam.standardHeight + mLocationInScreen[1] + paddingTop;
-            mMiddlePartY = (221 + RegionParam.standardOffsetY + 364 + 187) * bodyImageViewHeight / RegionParam.standardHeight + mLocationInScreen[1] + paddingTop;
+            mUpperPartY = (221 + RegionParam.standardOffsetY + 365) * bodyImageViewHeight / RegionParam.standardHeight + mLocationInScreen[1] + paddingTop;
+            mMiddlePartY = (221 + RegionParam.standardOffsetY + 365 + 190) * bodyImageViewHeight / RegionParam.standardHeight + mLocationInScreen[1] + paddingTop;*/
+
+            //微医人体图片
+            mHeadY = (155 + RegionParam.standardOffsetY) * bodyImageViewHeight / RegionParam.standardHeight + mLocationInScreen[1] + paddingTop;
+            mHandX1 = 138 * bodyImageView.getWidth() / RegionParam.standardWidth + bodyImageView.getLeft() + mLocationInScreen[0];
+            mHandX2 = (RegionParam.standardWidth - 120) * bodyImageView.getWidth() / RegionParam.standardWidth  + bodyImageView.getLeft() + mLocationInScreen[0];
+            mChestY = (155 + RegionParam.standardOffsetY + 118) * bodyImageViewHeight / RegionParam.standardHeight + mLocationInScreen[1] + paddingTop;
+            mWaistY = (155 + RegionParam.standardOffsetY + 118 + 136) * bodyImageViewHeight / RegionParam.standardHeight + mLocationInScreen[1] + paddingTop;
+            mNakedness = (155 +  RegionParam.standardOffsetY + 118 + 136 + 72) * bodyImageViewHeight / RegionParam.standardHeight + mLocationInScreen[1] + paddingTop;
+            mLeftLowerExtremity = 225 * bodyImageView.getWidth() / RegionParam.standardWidth + bodyImageView.getLeft() + mLocationInScreen[0];
+            mRightLowerExtremity = (RegionParam.standardWidth - 225) * bodyImageView.getWidth() / RegionParam.standardWidth + + bodyImageView.getLeft() + mLocationInScreen[0];
+
+            mRleLeft = 227 * bodyImageView.getWidth() / RegionParam.standardWidth + bodyImageView.getLeft() + mLocationInScreen[0];;
+            mRleTop = (480 + RegionParam.standardOffsetY) * bodyImageViewHeight / RegionParam.standardHeight + mLocationInScreen[1] + paddingTop;
+            mRleRight = (227 + 130) * bodyImageView.getWidth() / RegionParam.standardWidth + bodyImageView.getLeft() + mLocationInScreen[0];
+            mRleBottom = (480 + RegionParam.standardOffsetY + 471) * bodyImageViewHeight / RegionParam.standardHeight + mLocationInScreen[1] + paddingTop;
+            mRleRect.set(mRleLeft, mRleTop, mRleRight, mRleBottom); //设置右下肢的坐标范围
+
+            mNdLeft = 95 * bodyImageView.getWidth() / RegionParam.standardWidth + bodyImageView.getLeft() + mLocationInScreen[0];
+            mNdTop = (396 + RegionParam.standardOffsetY) * bodyImageViewHeight / RegionParam.standardHeight + mLocationInScreen[1] + paddingTop;
+            mNdRight = (95 + 261) * bodyImageView.getWidth() / RegionParam.standardWidth + bodyImageView.getLeft() + mLocationInScreen[0];
+            mNdBottom = (396 + RegionParam.standardOffsetY + 85) * bodyImageViewHeight / RegionParam.standardHeight + mLocationInScreen[1] + paddingTop;
+            mNakednessRect.set(mNdLeft, mNdTop, mNdRight, mNdBottom);
+
+
+            mBackHeadY = (221 + RegionParam.standardOffsetY) * bodyImageViewHeight / RegionParam.standardHeight + mLocationInScreen[1] + paddingTop;
+            mUpperPartY = (221 + RegionParam.standardOffsetY + 365) * bodyImageViewHeight / RegionParam.standardHeight + mLocationInScreen[1] + paddingTop;
+            mMiddlePartY = (221 + RegionParam.standardOffsetY + 365 + 190) * bodyImageViewHeight / RegionParam.standardHeight + mLocationInScreen[1] + paddingTop;
 
             initParametersForRegionLocation();
 
@@ -317,6 +362,23 @@ public class WaveEffectLayout extends FrameLayout implements Runnable {
         Log.d(TAG, "mHeadY is " + mHeadY);
         Log.d(TAG, "mChestY is " + mChestY);
         Log.d(TAG, "mWaistY is " + mWaistY);
+        Log.d(TAG, "mNakedness is " + mNakedness);
+        /*Log.d(TAG, "bodyImageViewHeight is " + bodyImageViewHeight);
+        Log.d(TAG, "bodyImageView.getWidth() is " + bodyImageView.getWidth());
+        Log.d(TAG, "bodyImageView.getLeft() is " + bodyImageView.getLeft());*/
+        Log.d(TAG, "mLeftLowerExtremity is " + mLeftLowerExtremity);
+        /*Log.d(TAG, "mRightLowerExtremity is " + mRightLowerExtremity);*/
+        Log.d(TAG, "rect.contains is " + mRleRect.contains(x, y));
+        Log.d(TAG, "rect.toString is " + mRleRect.toString());
+
+        if(floatImageView != null){
+            mFrameLayout.removeView(floatImageView);
+        }
+        floatImageView = new ImageView(mContext);
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+                LayoutParams.MATCH_PARENT);
+        layoutParams.gravity = Gravity.CENTER;
+        floatImageView.setLayoutParams(layoutParams);
 
         if(HumanBodyWidget.mShowingBack){
             if(x < mHandX1 || x > mHandX2)
@@ -331,16 +393,62 @@ public class WaveEffectLayout extends FrameLayout implements Runnable {
                 return RegionParam.REGION_BACK_LOWER_PART;
 
         }else {
-            if(x < mHandX1 || x > mHandX2)
-                return RegionParam.REGION_FRONT_HAND;
-            else if (y < mHeadY)
-                return RegionParam.REGION_FRONT_HEAD;
-            else if(y < mChestY)
-                return RegionParam.REGION_FRONT_CHEST;
-            else if(y < mWaistY)
-                return RegionParam.REGION_FRONT_WAIST;
-            else
+            if(mRleRect.contains(x , y)){ //右下肢
+                floatImageView.setImageResource(R.mipmap.diagnose_man_right_leg);
+                floatImageView.setTag(Region.LEG);
+                mFrameLayout.addView(floatImageView);
                 return RegionParam.REGION_FRONT_LEG;
+            }
+            if(mNakednessRect.contains(x, y)){ //下体
+                floatImageView.setImageResource(R.mipmap.diagnose_man_middle);
+                floatImageView.setTag(Region.BACKPELVIC);
+                mFrameLayout.addView(floatImageView);
+                return RegionParam.REGION_FRONT_NAKEDNESS;
+            }
+            if(x < mHandX1){ //左上肢
+                floatImageView.setImageResource(R.mipmap.diagnose_man_left_arm);
+                floatImageView.setTag(Region.HAND);
+                mFrameLayout.addView(floatImageView);
+                return RegionParam.REGION_FRONT_HAND;
+            }else if(x > mHandX2){ //右上肢
+                floatImageView.setImageResource(R.mipmap.diagnose_man_right_arm);
+                floatImageView.setTag(Region.HAND);
+                mFrameLayout.addView(floatImageView);
+                return RegionParam.REGION_FRONT_HAND;
+            }else if (y < mHeadY){ //头部
+                //Drawable drawable = getResources().getDrawable(R.drawable.body_parts_head_selector);
+                /*bodyImageView.setBackgroundDrawable(addStateDrawable(mContext, R.mipmap.man_front, R.mipmap.diagnose_man_head, R.mipmap.diagnose_man_head));*/
+                floatImageView.setImageResource(R.mipmap.diagnose_man_head);
+                floatImageView.setTag(Region.HEAD);
+                mFrameLayout.addView(floatImageView);
+                return RegionParam.REGION_FRONT_HEAD;
+            }
+            else if(y < mChestY){ //胸部
+                floatImageView.setImageResource(R.mipmap.diagnose_man_chest);
+                floatImageView.setTag(Region.CHEST);
+                mFrameLayout.addView(floatImageView);
+                return RegionParam.REGION_FRONT_CHEST;
+            }
+            else if(y < mWaistY){ //腹部
+                floatImageView.setImageResource(R.mipmap.diagnose_man_belly);
+                floatImageView.setTag(Region.ABDOMEN);
+                mFrameLayout.addView(floatImageView);
+                return RegionParam.REGION_FRONT_WAIST;
+            }
+            /*else if(y < mNakedness){ //下体 nekedness
+                floatImageView.setImageResource(R.mipmap.diagnose_man_middle);
+                mFrameLayout.addView(floatImageView);
+                return RegionParam.REGION_FRONT_NAKEDNESS;
+            }*/else{ //下肢
+                if(x < mLeftLowerExtremity /*&& x >= mHandX1*/){ //点击处为左下肢(左腿)区域
+                    floatImageView.setImageResource(R.mipmap.diagnose_man_left_leg);
+                    floatImageView.setTag(Region.LEG);
+                    mFrameLayout.addView(floatImageView);
+                }/*else if(x > mRightLowerExtremity*//* && x <= mHandX2*//*){ //点击处为右下肢(右腿)区域
+                    floatImageView.setImageResource(R.mipmap.diagnose_man_right_leg);
+                }*/
+                return RegionParam.REGION_FRONT_LEG;
+            }
         }
 
     }
@@ -398,6 +506,10 @@ public class WaveEffectLayout extends FrameLayout implements Runnable {
         return imageView;
     }
 
+    private void getBodyFrameLayout(){
+        mFrameLayout = (FrameLayout) this.findViewById(R.id.body_container);
+    }
+
     private void refresh(int regionType){
         regionPathView.setAdapter(regionType);
         regionView.setAdapter(regionType);
@@ -409,5 +521,29 @@ public class WaveEffectLayout extends FrameLayout implements Runnable {
 
     public void setRegionType(int regionType) {
         this.regionType = regionType;
+    }
+
+    private StateListDrawable addStateDrawable(Context context, int idNormal, int idPressed, int idFocused) {
+        StateListDrawable sd = new StateListDrawable();
+        Drawable normal = idNormal == -1 ? null : context.getResources().getDrawable(idNormal);
+        Drawable pressed = idPressed == -1 ? null : context.getResources().getDrawable(idPressed);
+        Drawable focus = idFocused == -1 ? null : context.getResources().getDrawable(idFocused);
+        //注意该处的顺序，只要有一个状态与之相配，背景就会被换掉
+        //所以不要把大范围放在前面了，如果sd.addState(new[]{},normal)放在第一个的话，就没有什么效果了
+        sd.addState(new int[]{android.R.attr.state_enabled, android.R.attr.state_focused}, focus);
+        sd.addState(new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled}, pressed);
+        sd.addState(new int[]{android.R.attr.state_focused}, focus);
+        sd.addState(new int[]{android.R.attr.state_pressed}, pressed);
+        sd.addState(new int[]{android.R.attr.state_enabled}, normal);
+        sd.addState(new int[]{}, normal);
+        return sd;
+    }
+
+    public FrameLayout getmFrameLayout() {
+        return mFrameLayout;
+    }
+
+    public ImageView getFloatImageView() {
+        return floatImageView;
     }
 }

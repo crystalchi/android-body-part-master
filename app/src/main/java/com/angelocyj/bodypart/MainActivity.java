@@ -67,6 +67,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void genderClick(View view){
+        if(container.getFloatImageView() != null){
+            container.getmFrameLayout().removeView(container.getFloatImageView());
+        }
         switch (view.getId()){
             case R.id.man_btn:
                 if(bodyWidget.toggleBodyGenderImage(true)) {
@@ -92,7 +95,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sideClick(View view){
-
+        if(container.getFloatImageView() != null){
+            container.getmFrameLayout().removeView(container.getFloatImageView());
+        }
         switch (view.getId()){
             case R.id.flipFront:
                 if(bodyWidget.flipBody(false)) {
