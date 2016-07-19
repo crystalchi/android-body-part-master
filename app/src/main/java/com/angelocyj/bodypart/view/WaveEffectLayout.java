@@ -132,7 +132,6 @@ public class WaveEffectLayout extends FrameLayout implements Runnable {
         if (!mShouldDoAnimation || mTargetWidth <= 0 || mTouchTarget == null || !"root".equals(mTag)) {
             return;
         }
-
         mRevealRadius += mRevealRadiusGap;
 
         this.getLocationOnScreen(mLocationInScreen);
