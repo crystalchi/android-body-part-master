@@ -29,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         setTitle("身体部位");
+
+
+
+
         initViews(savedInstanceState);
 
     }
