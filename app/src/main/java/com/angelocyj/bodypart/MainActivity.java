@@ -31,8 +31,6 @@ public class MainActivity extends AppCompatActivity {
         setTitle("身体部位");
 
 
-
-
         initViews(savedInstanceState);
 
     }
